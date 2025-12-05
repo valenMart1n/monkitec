@@ -1,0 +1,9 @@
+.header-background{
+    display: flex;
+    flex-wrap: nowrap;
+    border-bottom-width: 3px;
+    border-bottom-style: solid;
+    border-bottom-color: #dee2e6;
+    height: 45px;
+    width: 100%;
+}
