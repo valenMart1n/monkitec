@@ -1,0 +1,75 @@
+.cart-list-background{
+    font-family: 'Lato', Courier, monospace;
+    width: 100%;
+    height: 100%;
+   
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.cart-item{
+    
+    font-size: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 90%;
+   background-color: white;
+}
+.item-image{
+    width: 35%;
+    height: auto;
+}
+.item-title{
+    padding-left: 10px;
+    width: 80%;
+}
+
+.item-cantidad{
+    margin-left: 10px;
+    width: 20%;
+}
+.item-info-container{
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 65%;
+    height: 50%;
+}
+.delete-item-button{
+    color: red;
+    background-color: white;
+    border: none;
+}
+.item-section{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap ;
+}
+.total-label{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    width: 95%;
+    padding-top: 10px;
+}
+.cart-summary{
+    width: 100%;
+    padding-left: 20px;
+}
+.checkout-button{
+    font-family: 'Roboto', Courier, monospace;
+    border:none;
+    border-radius: 5px;
+    background-color: #88e1f2;
+    margin-top: 15px;
+    padding: 10px;
+    width: 95%;
+    color: #21243d;
+    font-size: 16px;
+    font-weight: bolder;
+}
+.label-precio{
+    font-size: 20px;
+    font-weight: bolder;
+}

@@ -1,9 +1,40 @@
 .header-background{
     display: flex;
     flex-wrap: nowrap;
-    border-bottom-width: 3px;
-    border-bottom-style: solid;
-    border-bottom-color: #dee2e6;
-    height: 45px;
+    align-items: center;
+    background-color: rgb(20, 43, 68);
+    height: 55px;
     width: 100%;
+}
+
+.fa-bars{
+    margin-left: 10px;
+    color: white;
+}
+.image-logo{
+    margin-left: 5px;
+    height: 47px;
+    width: 49px;
+}
+.title-background{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.title{
+    font-family: 'Rubik Dirt', Courier, monospace;
+    color: white;
+    font-size: 20px;
+}
+.shopping-cart-container{
+color: white;
+    margin-right: 1.5em;
+    font-size: 20px;
+    cursor: pointer;
+}
+@media (min-width: 640px) {
+    .title{
+        font-size: 25px;
+    }
 }
