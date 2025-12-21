@@ -5,11 +5,10 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Error404 from "../../Error404/Error404";
 
-
 function CategoryList() {
     const { categoryId } = useParams();
     const navigate = useNavigate();
-   
+    const [featured, setFeatured] = useState([]);
     const [categoriesArray, setCategoriesArray] = useState([]);
     const [productsArray, setProductsArray] = useState([]);
     const [currentCategory, setCurrentCategory] = useState("");
@@ -24,8 +23,10 @@ function CategoryList() {
                 desc: product.desc,
                 precio: product.precio,
                 ruta_imagen: product.ruta_imagen || product.imageUrl,
+                ruta_imagen2: product.ruta_imagen2 || product.imageUrl2,
                 imagen_public_id: product.imagen_public_id,
                 imagen_optimizada: product.imagen_optimizada,
+                imagen2_optimizada: product.imagen2_optimizada,
                 Variations: product.variations, 
                 Category: product.category,
                 stock_total: product.stock_total,
@@ -71,6 +72,18 @@ function CategoryList() {
         return "/default-category.png";
     };
 
+    const getImage2Url = (item) => {
+        if (item.imagen2_optimizada) {
+            return item.imagen2_optimizada.thumbnail || 
+                   item.imagen2_optimizada.medium || 
+                   item.imagen2_optimizada.original;
+        }
+        if (item.ruta_imagen2) {
+            return item.ruta_imagen2;
+        }
+        return "/default-category.png";
+    };
+
     // Función para extraer solo datos necesarios de categoría
     const extractCategoryData = (category) => {
         return {
@@ -89,13 +102,17 @@ function CategoryList() {
             desc: product.desc,
             precio: product.precio,
             imageUrl: getImageUrl(product),
-            hasImage: !!(product.ruta_imagen || product.imagen_public_id),
+            imageUrl2: getImage2Url(product),
+            hasImage: !!(product.ruta_imagen || product.imagen_public_id || product.image_public_id2),
             variations: product.Variations || product.variations || [],
             stock_total: product.stock_total || 0,
             disponible: product.disponible !== false,
             ruta_imagen: product.ruta_imagen,
+            ruta_imagen2: product.ruta_imagen2,
             imagen_public_id: product.imagen_public_id,
+            image_public_id2: product.imagen_public_id2,
             imagen_optimizada: product.imagen_optimizada,
+            imagen2_optimizada: product.imagen2_optimizada,
             category: product.Category 
         };
     };
@@ -157,6 +174,7 @@ function CategoryList() {
                             const categoriesWithImages = subcategorias.map(extractCategoryData);
                             setCategoriesArray(categoriesWithImages);
                             setProductsArray([]);
+                            setFeatured([]);
                             return;
                         }
                     }
@@ -189,12 +207,12 @@ function CategoryList() {
                         
                         setProductsArray(productsWithImages);
                         setCategoriesArray([]);
+                        setFeatured([]);
                     } else {
                         throw new Error("Error al obtener productos");
                     }
                     
                 } else {
-                    // 4. Página principal: obtener categorías principales
                     const res = await fetch("http://localhost:3030/categories/", {
                         method: "GET",
                         headers: { 
@@ -216,6 +234,22 @@ function CategoryList() {
                         
                         setCategoriesArray(categoriesWithImages);
                         setProductsArray([]);
+                        const res2 = await fetch("http://localhost:3030/products/featured?limit=4", {
+                            method: "GET",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Accept": "application/json"    
+                            }
+                        });
+                        if(res2.ok){
+                            const data2Json = await res2.json();
+                            const data2 = data2Json.success ? data2Json.data : data2Json;
+                            const featuredWithImages = Array.isArray(data2)
+                            ? data2.map(extractProductData)
+                            : [];
+                            setFeatured(featuredWithImages);
+
+                        }
                     } else {
                         throw new Error("Error al obtener categorías");
                     }
@@ -229,7 +263,8 @@ function CategoryList() {
                 }
                 setCategoriesArray([]);
                 setProductsArray([]);
-            } finally {
+                setFeatured([])
+            } finally { 
                 setLoading(false);
             }
         };
@@ -278,6 +313,20 @@ function CategoryList() {
                     ))}
                 </div>
             )}
+            {featured.length > 0 ? (
+                <div className="featured_background">
+                    <h1 className="featured_title">Productos destacados</h1>
+                    {featured.map((featured_product) => (
+                        
+                            <ListedProduct 
+                            key={featured_product.id}
+                            product={featured_product}
+                            onClick={() => getProductDetail(featured_product)}
+                            />
+                    ))}
+                </div>
+            ):(null)}
+            
         </div>
     );
 

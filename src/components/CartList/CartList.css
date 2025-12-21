@@ -36,6 +36,7 @@
     height: 50%;
 }
 .delete-item-button{
+    cursor: pointer;
     color: red;
     background-color: white;
     border: none;
@@ -58,6 +59,7 @@
     padding-left: 20px;
 }
 .checkout-button{
+    cursor: pointer;
     font-family: 'Roboto', Courier, monospace;
     border:none;
     border-radius: 5px;
@@ -72,4 +74,116 @@
 .label-precio{
     font-size: 20px;
     font-weight: bolder;
+}
+.empty-cart{
+    margin-top: 20px;
+    font-size: 15px;
+    text-align: center;
+    color: #88e1f2;
+    width: 90%;
+    border: solid;
+    border-width: 1px;
+    border-color: #88e1f2;
+}
+.cart-list-title{
+    margin: 10px;
+    font-family: 'Anton', Courier, monospace;
+    font-weight: 300;
+    width: 100%;
+    font-size: 25px;
+}
+.client-data{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 10px;
+    border-top: solid;
+    border-top-width: 1px;
+    padding-top: 10px;
+}
+.client-input-container, .delivery-input-container{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    width: 100%;
+}
+.cart-label-address{
+    width: 100%;
+}
+.delivery-input-container{
+    display: none;
+}
+.delivery-input-container.true{
+    display: flex;
+    flex-wrap: wrap;
+}
+.cart-label-name{
+    width: 100%;
+}
+
+.cart-label-delivery{
+    width: 85%;
+}
+
+.name-input, .delivery-input{
+    border: solid;
+    border-radius: 5px;
+    border-width: 2px;
+    border-color: #d3d3d4c0;
+    background-color: #ebebeb;
+    margin-top: 10px;
+    width: 55%;
+    font-size: 15px;
+    padding: 5px;
+}
+.delivery-input{
+    width: 65%;
+}
+.name-input.true, .delivery-input.true{
+    background-color: rgba(255, 0, 0, 0.671);
+    border-color: red;
+    color: white;
+}
+@media (min-width: 600px) {
+    .cart-list-background{
+        justify-content: left;
+    }
+    .cart-list-title{
+        font-size: 30px;
+    }
+    .cart-item{
+        font-size: 18px;
+        max-width: 490px;
+        max-height: 135px;
+    }
+    .cart-label-delivery{
+    width: 55%;
+    }
+}
+@media (min-width: 1024px) {
+    .empty-cart{
+        width: 50%;
+        padding: 10px;
+    }
+    .cart-list-background{
+        justify-content: center;
+    }
+   
+    .cart-summary{
+        max-width: 490px;
+        height: 60%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .cart-label-delivery{
+        width: 90%;
+    }
+    .checkout-button{
+        max-width: 490px;
+        
+    }
+    .checkout-button:hover{
+        background-color: #ace4f0;
+    }
 }

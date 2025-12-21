@@ -8,17 +8,12 @@ import React, { useState } from "react";
 import CartList from "../CartList/CartList";
 
 function Header(){
-    /* const [cart, setCart] = useContext(CartContext); // Estado para manejar el carrito
-    const total = (cart ? cart.reduce((acc, curr) => {
-        return acc + curr.cantidad;
-    }, 0) : console.log("Está vacío"));
-     */
      const navigate = useNavigate();
     return(
         
         <header className="header-background">
            <Icon icon={faBars} css="fa-bars"/>
-           <div className="title-background">
+           <div className="title-background" onClick={() => navigate("/")}>
             <img src={logo} className='image-logo'/>
             <p className='title'>Monkitec</p>
             </div>

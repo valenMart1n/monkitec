@@ -5,16 +5,40 @@ import "./Product.css"
 import Error404 from "../Error404/Error404";
 import ignite from "../../img/ignite.jpg"
 import { Icon } from "../Icon";
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { useAlert } from "../../context/AlertContext";
+import { faAngleLeft, faAngleRight, faArrowLeft, faArrowRight, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 function Product() {
+    const { createToast } = useAlert();
     const { id } = useParams();
     const location = useLocation();
-    const [cart, setCart] = useContext(CartContext); 
+    const {cart, setCart} = useContext(CartContext); 
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
     const [selectedVariant, setSelectedVariant] = useState(null);
+    const [primary, setPrimaryImage] = useState(true);
+    const [touchStartX, setTouchStartX] = useState(0);
+
+    const handleTouchStart = (e) => {
+        setTouchStartX(e.touches[0].clientX);
+    };
+    const handleTouchEnd = (e) => {
+        if (!touchStartX) return;
+        
+        const touchEndX = e.changedTouches[0].clientX;
+        const diff = touchStartX - touchEndX;
+        const minSwipeDistance = 50;
+        
+        if (diff > minSwipeDistance) {
+            setPrimaryImage(false);
+        }
+        else if (diff < -minSwipeDistance) {
+            setPrimaryImage(true);
+        }
+        
+        setTouchStartX(0);
+    };
 
     const append = () => {
         setQuantity(prev => prev + 1);
@@ -25,181 +49,150 @@ function Product() {
             setQuantity(prev => prev - 1);
         }
     }
-  const addToCart = (e) => {
-    e.stopPropagation();
-    
-    if (!product.disponible) {
-        alert("Producto no disponible");
-        return;
-    }
-    
-    // Verificar si tiene variantes y si se seleccionó una
-    const hasVariants = variations.length > 0;
-    
-    if (hasVariants && !selectedVariant) {
-        alert("Seleccione una variante de este producto");
-        return;
-    }
-    
-    // Calcular stock disponible
-    let stockDisponible = 0;
-    
-    if (hasVariants && selectedVariant) {
-        // Stock de la variante específica
-        stockDisponible = selectedVariant.stock_info?.stock || 
-                         selectedVariant.Product_Variation?.stock || 
-                         0;
-    } else {
-        // Stock total del producto (sin variantes)
-        stockDisponible = product.stock_total || 0;
-    }
-    
-    // Verificar si hay stock
-    if (stockDisponible <= 0) {
-        alert("No hay stock disponible de este producto");
-        return;
-    }
-    
-    // Calcular cantidad ya en el carrito
-    let cantidadEnCarrito = 0;
-    
-    if (hasVariants && selectedVariant) {
-        // Buscar por producto + variante
-        cantidadEnCarrito = cart.reduce((total, item) => {
-            if (item.id === product.id && item.varianteId === selectedVariant.id) {
-                return total + item.cantidad;
-            }
-            return total;
-        }, 0);
-    } else {
-        // Buscar solo por producto (sin variantes)
-        cantidadEnCarrito = cart.reduce((total, item) => {
-            if (item.id === product.id && !item.varianteId) {
-                return total + item.cantidad;
-            }
-            return total;
-        }, 0);
-    }
-    
-    // Verificar si supera el stock disponible
-    const cantidadTotalDespues = cantidadEnCarrito + quantity;
-    
-    if (cantidadTotalDespues > stockDisponible) {
-        const disponibleParaAgregar = stockDisponible - cantidadEnCarrito;
+
+    const addToCart = (e) => {
+        e.stopPropagation();
         
-        if (disponibleParaAgregar <= 0) {
-            alert("Ya tienes la cantidad máxima disponible en el carrito");
-        } else {
-            alert(`Solo puedes agregar ${disponibleParaAgregar} unidades más. Stock disponible: ${stockDisponible}`);
-            
-            // Opcional: ajustar automáticamente la cantidad al máximo disponible
-            setQuantity(disponibleParaAgregar);
+        if (!product.disponible) {
+            createToast({
+            text: "El producto ya no se encuentra disponible",
+            tipo: "cross"
+        }); 
+            return;
         }
-        return;
-    }
-    
-    // Datos mínimos para el carrito
-    const cartItem = {
-        id: product.id,
-        desc: product.desc,
-        precio: product.precio,
-        cantidad: quantity,
-        imagen: product.imageUrl || product.ruta_imagen || ignite,
-        stockDisponible: stockDisponible, // Guardamos el stock disponible
-        // Solo incluir variante si existe
-        ...(hasVariants && selectedVariant && {
-            varianteId: selectedVariant.id,
-            varianteDesc: selectedVariant.descripcion
-        })
-    };
-    
-    // Crear ID único para el carrito
-    const cartItemId = hasVariants && selectedVariant 
-        ? `${product.id}-${selectedVariant.id}`
-        : product.id.toString();
-    
-    setCart((currItems) => {
-        const isItemFound = currItems.find((item) => {
-            // Comparar por ID único del carrito
-            const itemId = item.varianteId 
-                ? `${item.id}-${item.varianteId}`
-                : item.id.toString();
-            return itemId === cartItemId;
-        });
         
-        if (isItemFound) {
-            // Si ya existe, incrementar cantidad
-            return currItems.map((item) => {
+        const hasVariants = variations.length > 0;
+        
+        if (hasVariants && !selectedVariant) {
+            alert("Seleccione una variante de este producto");
+            return;
+        }
+        
+        let stockDisponible = 0;
+        
+        if (hasVariants && selectedVariant) {
+            stockDisponible = selectedVariant.stock_info?.stock || 
+                             selectedVariant.Product_Variation?.stock || 
+                             0;
+        } else {
+            stockDisponible = product.stock_total || 0;
+        }
+        
+        if (stockDisponible <= 0) {
+            alert("No hay stock disponible de este producto");
+            return;
+        }
+        
+        let cantidadEnCarrito = 0;
+        
+        if (hasVariants && selectedVariant) {
+            cantidadEnCarrito = cart.reduce((total, item) => {
+                if (item.id === product.id && item.varianteId === selectedVariant.id) {
+                    return total + item.cantidad;
+                }
+                return total;
+            }, 0);
+        } else {
+            cantidadEnCarrito = cart.reduce((total, item) => {
+                if (item.id === product.id && !item.varianteId) {
+                    return total + item.cantidad;
+                }
+                return total;
+            }, 0);
+        }
+        
+        const cantidadTotalDespues = cantidadEnCarrito + quantity;
+        
+        if (cantidadTotalDespues > stockDisponible) {
+            const disponibleParaAgregar = stockDisponible - cantidadEnCarrito;
+            
+            if (disponibleParaAgregar <= 0) {
+                createToast({
+                    text: "Ya tenés la cantidad máxima disponible en el carrito",
+                    tipo: "cross"
+                }); 
+            } else {
+                createToast({
+                    text: `Solo puedes agregar ${disponibleParaAgregar} unidades más. Stock disponible: ${stockDisponible}`,
+                    tipo: "warning"
+                });
+                setQuantity(disponibleParaAgregar);
+            }
+            return;
+        }
+        
+        const cartItem = {
+            id: product.id,
+            desc: product.desc,
+            precio: product.precio,
+            cantidad: quantity,
+            imagen: product.imageUrl || product.ruta_imagen || ignite,
+            stockDisponible: stockDisponible,
+            ...(hasVariants && selectedVariant && {
+                varianteId: selectedVariant.id,
+                varianteDesc: selectedVariant.descripcion
+            })
+        };
+        
+        const cartItemId = hasVariants && selectedVariant 
+            ? `${product.id}-${selectedVariant.id}`
+            : product.id.toString();
+        
+        setCart((currItems) => {
+            const isItemFound = currItems.find((item) => {
                 const itemId = item.varianteId 
                     ? `${item.id}-${item.varianteId}`
                     : item.id.toString();
-                    
-                return itemId === cartItemId 
-                    ? { 
-                        ...item, 
-                        cantidad: item.cantidad + quantity 
-                    }
-                    : item;
+                return itemId === cartItemId;
             });
-        } else {
-            // Si no existe, agregar nuevo ítem
-            return [...currItems, cartItem];
-        }
-    });
-    
-    // Mensaje de confirmación
-    const mensaje = hasVariants 
-        ? `${product.desc} (${selectedVariant.descripcion}) agregado al carrito`
-        : `${product.desc} agregado al carrito`;
-    
-    alert(mensaje);
-
-};
-    // Función para obtener la mejor URL de imagen
-    const getProductImageUrl = (productData) => {
-        if (!productData) return ignite; // Imagen por defecto
+            
+            if (isItemFound) {
+                return currItems.map((item) => {
+                    const itemId = item.varianteId 
+                        ? `${item.id}-${item.varianteId}`
+                        : item.id.toString();
+                        
+                    return itemId === cartItemId 
+                        ? { 
+                            ...item, 
+                            cantidad: item.cantidad + quantity 
+                        }
+                        : item;
+                });
+            } else {
+                return [...currItems, cartItem];
+            }
+        });
         
-        // Si tiene imagen optimizada de Cloudinary
-        if (productData.imagen_optimizada) {
-            // Prioridad: detail > large > medium > original
-            return productData.imagen_optimizada.detail || 
-                   productData.imagen_optimizada.large || 
-                   productData.imagen_optimizada.medium || 
-                   productData.imagen_optimizada.original || 
-                   ignite;
-        }
-        
-        // Si tiene ruta_imagen directa
-        if (productData.ruta_imagen) {
-            return productData.ruta_imagen;
-        }
-        
-        // Imagen por defecto
-        return ignite;
+        const mensaje = hasVariants 
+            ? `${product.desc} (${selectedVariant.descripcion}) agregado al carrito`
+            : `${product.desc} agregado al carrito`;
+        createToast({
+            text: mensaje,
+            tipo: "check"
+        });
     };
 
     // Función para extraer datos limpios del producto
     const extractProductData = (productData) => {
-        // Manejar si viene dentro de data.success o directamente
         let product = productData;
         if (productData.success && productData.data) {
             product = productData.data;
         }
         
-        const imageUrl = getProductImageUrl(product);
-        
         return {
             id: product.id,
             desc: product.desc,
             precio: product.precio,
-            imageUrl: imageUrl,
-            hasImage: !!(product.ruta_imagen || product.imagen_public_id),
+            hasImage: !!(product.ruta_imagen || product.imagen_public_id || product.ruta_imagen2 || product.imagen_public_id2),
             variations: product.Variations || product.variations || [],
             stock_total: product.stock_total || 0,
             disponible: product.disponible !== false,
             category: product.Category || null,
             imagen_optimizada: product.imagen_optimizada || null,
-            ruta_imagen: product.ruta_imagen || null
+            imagen2_optimizada: product.imagen2_optimizada || null,
+            ruta_imagen: product.ruta_imagen || null,
+            ruta_imagen2: product.ruta_imagen2 || null
         };
     };
 
@@ -208,7 +201,6 @@ function Product() {
             try {
                 setLoading(true);
                 
-                // Si ya tenemos el producto del estado (viene de navegación)
                 if (location.state?.product) {
                     const cleanProduct = extractProductData(location.state.product);
                     setProduct(cleanProduct);
@@ -216,7 +208,6 @@ function Product() {
                     return;
                 }
                 
-                // Obtener producto desde la API
                 const response = await fetch("http://localhost:3030/products/byId", {
                     method: "POST",
                     headers: { 
@@ -239,7 +230,6 @@ function Product() {
                     throw new Error("PRODUCT_NOT_FOUND");
                 }
                 
-                // Extraer datos limpios con imágenes
                 const cleanProduct = extractProductData(productData);
                 setProduct(cleanProduct);
                 
@@ -265,34 +255,111 @@ function Product() {
     const variations = product.variations || [];
     const categoryName = product.category?.desc || "";
     
+    
+    const getImage = (optimizada, ruta) => {
+          if (!optimizada && !ruta) {
+        return null;
+    }
+
+    if (optimizada) {
+        const url = optimizada.detail || 
+                   optimizada.large || 
+                   optimizada.medium || 
+                   optimizada.original || 
+                   null;
+        
+        if (url && isCloudinaryPlaceholder(url)) {
+            return null;
+        }
+        return url;
+    }
+    if (ruta) {
+        if (isCloudinaryPlaceholder(ruta)) {
+            return null;
+        }
+        return ruta;
+    }
+    
+        return null;
+    };
+    
+    const isCloudinaryPlaceholder = (url) => {
+        if (!url) return true;
+    
+        const placeholderPatterns = [
+            '/0?_a=',      
+            '/image/upload/0',
+            '/default',    
+            '/placeholder' 
+    ];
+    
+    return placeholderPatterns.some(pattern => url.includes(pattern));
+};
+
+    const hasSecondImage = () => {
+        const result = getImage(product.imagen2_optimizada, product.ruta_imagen2);
+        if(result == 0 || result == null){
+            return false;
+        }
+        return true;
+    };
+    const image1 = getImage(product.imagen_optimizada, product.ruta_imagen);
+    const image2 = getImage(product.imagen2_optimizada, product.ruta_imagen2);
+    
     return (
         <div className="product-detail-background">
-            {/* Imagen del producto */}
-            <div className="product-image-container">
-                <img 
-                    src={product.imageUrl} 
-                    className="prod-img" 
-                    alt={product.desc || "Producto"} 
-                    onError={(e) => {
-                        e.target.src = ignite;
-                        e.target.onerror = null; // Evitar loops
-                    }}
-                />
+            <section className="image-section">
+            {(!primary && hasSecondImage())&&(
+            <Icon css="previus-image" icon={faAngleLeft} onClick={()=>{setPrimaryImage(true)}}/>
+
+            )}
+            <div className={`product-image-container ${hasSecondImage() ? 'has-hover' : ''}`}>
+                {product.hasImage ? (
+                    <>
+                        <img 
+                            src={image1} 
+                            alt={product.desc}
+                            className={`prod-image primary`}
+                            onError={(e) => {
+                                e.target.src = ignite;
+                            }}
+                        />
+                        
+                        {(hasSecondImage()) && (
+                            <img 
+                                src={image2} 
+                                alt={`${product.desc} - vista alterna`}
+                                onTouchStart={handleTouchStart}
+                                onTouchEnd={handleTouchEnd}
+                                className={`prod-image secondary ${!primary? 'active':''}`}
+                                onError={(e) => {
+                                    e.target.src = image1 || ignite;
+                                }}
+                            />
+                        )}
+                    </>
+                ) : (
+                    <img 
+                        src={ignite} 
+                        alt={product.desc}
+                        className="prod-image"
+                    />
+                )}
                 
-                {/* Indicador si no tiene imagen */}
                 {!product.hasImage && (
                     <div className="image-placeholder-note">
                         Imagen no disponible
                     </div>
                 )}
             </div>
-            
+            {(hasSecondImage() && primary) &&(
+                <Icon css="next-image" icon={faAngleRight} onClick={()=> {setPrimaryImage(false)}}/>
+            )}
+            </section>
             <div className="detail-container">
                 <h1 className="product-detail-title">{product.desc}</h1>
                 <p className="product-detail-price">${product.precio.toLocaleString('es-AR')}</p>
                 
-                
-
                 {variations.length > 0 && (
                     <section className="options-section">
                         <select className="variations" onChange={(e) => {
@@ -331,7 +398,6 @@ function Product() {
                                 );
                             })}
                         </select>
-                        
                     </section>
                 )}
                 
@@ -381,13 +447,6 @@ function Product() {
                         {product.disponible ? 'AGREGAR AL CARRITO' : 'PRODUCTO AGOTADO'}
                     </button>
                 </section>
-                
-                {/* Información adicional de la imagen */}
-                {product.imagen_optimizada && product.imagen_optimizada.zoom && (
-                    <div className="image-zoom-note">
-                        <small>Haz clic en la imagen para ver en tamaño completo</small>
-                    </div>
-                )}
             </div>  
         </div>
     );

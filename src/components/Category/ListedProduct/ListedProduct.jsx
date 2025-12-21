@@ -5,30 +5,53 @@ import { Icon } from '../../Icon';
 import { faBasketShopping } from '@fortawesome/free-solid-svg-icons';
 import { CartContext } from "../../../context/ShoppingCartContext";
 import { useNavigate } from "react-router-dom";
+import {useAlert} from "../../../context/AlertContext";
 
 function ListedProduct({ product, onClick }) {
+    const {createToast} = useAlert();
     const navigate = useNavigate();
-    const [cart, setCart] = useContext(CartContext); 
-    // Formatear precio
+    const {cart, setCart} = useContext(CartContext); 
+
     const formattedPrice = new Intl.NumberFormat('es-AR', {
         style: 'currency',
         currency: 'ARS'
     }).format(product.precio);
 
-    // Función para agregar al carrito
+     const getImage = (optimizada, ruta) => {
+        if (optimizada) {
+            return optimizada.detail || 
+                   optimizada.large || 
+                   optimizada.medium || 
+                   optimizada.original || 
+                   null
+        }
+        if (ruta) return ruta;
+    };
+
+
+    const hasSecondImage = () => {
+    const result = getImage(product.imagen2_optimizada, product.ruta_imagen2);
+        if(result == 0 || result == null){
+            return false;
+        }
+        return true;
+    };
+
+    const image1 = getImage(product.imagen_optimizada, product.ruta_imagen);
+    const image2 = getImage(product.imagen2_optimizada, product.ruta_imagen2);
+    const showHoverEffect = hasSecondImage();
+
     const addToCart = (e) => {
         if (e) e.stopPropagation();
-        
-        // Verificar si tiene variantes
-        const hasVariants = product.variations && product.variations.length > 0;
+        const hasVariants = Array.isArray(product.variations) && 
+                       product.variations.length > 0 && 
+                       product.variations.some(v => v !== null && v !== undefined);
         
         if (hasVariants) {
-            // Si tiene variantes, navegar a la página de detalles
             navigate(`/product/${product.id}`, {
                 state: { product }
             });
         } else {
-            // Si no tiene variantes, agregar directamente al carrito
             setCart((currItems) => {
                 const isItemFound = currItems.find((item) => item.id === product.id);
                 
@@ -48,37 +71,41 @@ function ListedProduct({ product, onClick }) {
                     }];
                 }
             });
-            
-            // Opcional: mostrar mensaje de confirmación
-            alert(`${product.desc} agregado al carrito`);
-            console.log(cart);
+            createToast({
+                text: "Producto agregado",
+                tipo: "check"
+            });
         }
-    };
-
-    // Función para obtener la mejor imagen (simplificada)
-    const getBestImage = () => {
-        if (product.imagen_optimizada) {
-            return product.imagen_optimizada.thumbnail || 
-                   product.imagen_optimizada.medium || 
-                   product.imagen_optimizada.original;
-        }
-        if (product.ruta_imagen) return product.ruta_imagen;
-        if (product.imageUrl) return product.imageUrl;
-        return '/default-product.png';
+        
     };
 
     return (
         <div className="listed-product-background" onClick={onClick}>
-            <div className="listed-product-image-container">
+            <div className={`listed-product-image-container ${showHoverEffect ? 'has-hover' : ''}`}>
                 {product.hasImage || product.ruta_imagen || product.imagen_optimizada ? (
-                    <img 
-                        src={getBestImage()} 
-                        alt={product.desc}
-                        className="prod-image"
-                        onError={(e) => {
-                            e.target.src = '/default-product.png';
-                        }}
-                    />
+                    <>
+                        {/* Imagen principal */}
+                        <img 
+                            src={image1} 
+                            alt={product.desc}
+                            className={`prod-image primary ${showHoverEffect ? 'hover-enabled' : ''}`}
+                            onError={(e) => {
+                                e.target.src = '/default-product.png';
+                            }}
+                        />
+                        
+                        {/* Imagen secundaria (solo si hay hover effect) */}
+                        {showHoverEffect && (
+                            <img 
+                                src={image2} 
+                                alt={`${product.desc} - vista alterna`}
+                                className="prod-image secondary"
+                                onError={(e) => {
+                                    e.target.src = image1 || '/default-product.png';
+                                }}
+                            />
+                        )}
+                    </>
                 ) : (
                     <div className="product-image-placeholder">
                         <span className="placeholder-text">No image</span>
@@ -107,6 +134,7 @@ function ListedProduct({ product, onClick }) {
                     {product.stock_total === 0 ? 'Sin stock' : (!product.disponible ? 'Agotado' : '')}
                 </div>
             </div>
+            
         </div>
     );
 }
