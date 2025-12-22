@@ -130,7 +130,7 @@ function CategoryList() {
                     const parentId = parseInt(categoryId);
                     
                     // 1. Obtener información de la categoría actual
-                    const categoryRes = await fetch("http://localhost:3030/categories/byId", {
+                    const categoryRes = await fetch("http://monkitecapidef.vercel.app/categories/byId", {
                         method: "POST",
                         headers: { 
                             "Content-Type": "application/json",
@@ -154,7 +154,7 @@ function CategoryList() {
                     setCurrentCategory(categoryData.desc);
                     
                     // 2. Obtener subcategorías
-                    const subRes = await fetch("http://localhost:3030/categories/subcategories", {
+                    const subRes = await fetch("http://monkitecapidef.vercel.app/categories/subcategories", {
                         method: "POST",
                         headers: { 
                             "Content-Type": "application/json",
@@ -180,7 +180,7 @@ function CategoryList() {
                     }
                     
                     // 3. Si no hay subcategorías, obtener productos
-                    const productsRes = await fetch("http://localhost:3030/products/byCategory", {
+                    const productsRes = await fetch("http://monkitecapidef.vercel.app/products/byCategory", {
                         method: "POST",
                         headers: { 
                             "Content-Type": "application/json",
@@ -213,7 +213,7 @@ function CategoryList() {
                     }
                     
                 } else {
-                    const res = await fetch("http://localhost:3030/categories/", {
+                    const res = await fetch("http://monkitecapidef.vercel.app/categories/", {
                         method: "GET",
                         headers: { 
                             "Content-Type": "application/json",
@@ -234,7 +234,7 @@ function CategoryList() {
                         
                         setCategoriesArray(categoriesWithImages);
                         setProductsArray([]);
-                        const res2 = await fetch("http://localhost:3030/products/featured?limit=4", {
+                        const res2 = await fetch("http://monkitecapidef.vercel.app/products/featured?limit=4", {
                             method: "GET",
                             headers: {
                                 "Content-Type": "application/json",

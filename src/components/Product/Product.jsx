@@ -208,7 +208,7 @@ function Product() {
                     return;
                 }
                 
-                const response = await fetch("http://localhost:3030/products/byId", {
+                const response = await fetch("http://monkitecapidef.vercel.app/products/byId", {
                     method: "POST",
                     headers: { 
                         "Content-Type": "application/json",
