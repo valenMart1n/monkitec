@@ -245,7 +245,6 @@ function Product() {
     }, [id, location.state]);
     
     if (loading) {
-        return <div className="loading">Cargando producto...</div>;
     }
     
     if (!product) {
