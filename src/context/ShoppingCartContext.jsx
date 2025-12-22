@@ -37,13 +37,13 @@ export const ShoppingCartProvider = ({children}) => {
         try {
             // Si el carrito está vacío, también limpiamos el backend
             if (cartData.length === 0) {
-                await fetch('http://monkitecapidef.vercel.app/cart/clear', {
+                await fetch('http://monkitec-api.vercel.app/cart/clear', {
                     method: 'POST',
                     credentials: 'include',
                 });
                 console.log('✅ Backend limpiado (carrito vacío)');
             } else {
-                await fetch('http://monkitecapidef.vercel.app/cart/save', {
+                await fetch('http://monkitec-api.vercel.app/cart/save', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ export const ShoppingCartProvider = ({children}) => {
     useEffect(() => {
         const loadFromBackend = async () => {
             try {
-                const response = await fetch('http://monkitecapidef.vercel.app/cart', {
+                const response = await fetch('http://monkitec-api.vercel.app/cart', {
                     credentials: 'include'
                 });
                 const data = await response.json();
@@ -172,7 +172,7 @@ export const ShoppingCartProvider = ({children}) => {
 
     const refreshCart = useCallback(async () => {
         try {
-            const response = await fetch('http://monkitecapidef.vercel.app/cart', {
+            const response = await fetch('http://monkitec-api.vercel.app/cart', {
                 credentials: 'include'
             });
             const data = await response.json();
