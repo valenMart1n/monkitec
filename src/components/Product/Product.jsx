@@ -208,7 +208,7 @@ function Product() {
                     return;
                 }
                 
-                const response = await fetch("http://monkitec-api.vercel.app/products/byId", {
+                const response = await fetch("https://monkitec-api.vercel.app/products/byId", {
                     method: "POST",
                     headers: { 
                         "Content-Type": "application/json",
