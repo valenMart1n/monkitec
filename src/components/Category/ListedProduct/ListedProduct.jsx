@@ -130,8 +130,8 @@ function ListedProduct({ product, onClick }) {
                     Comprar <Icon icon={faBasketShopping}/>
                 </button>
                
-               <div className={`product-status ${product.disponible ? 'available' : 'sold-out'}`}>
-                    {product.stock_total === 0 ? 'Sin stock' : (!product.disponible ? 'Agotado' : '')}
+               <div className={`product-status ${!product.stock_total == 0 ? 'available' : 'sold-out'}`}>
+                    {product.stock_total === 0 || !product.disponible ? 'Sin stock' : ""}
                 </div>
             </div>
             

@@ -12,8 +12,7 @@ function Header(){
     return(
         
         <header className="header-background">
-           <Icon icon={faBars} css="fa-bars"/>
-           <div className="title-background" onClick={() => navigate("/")}>
+            <div className="title-background" onClick={() => navigate("/")}>
             <img src={logo} className='image-logo'/>
             <p className='title'>Monkitec</p>
             </div>

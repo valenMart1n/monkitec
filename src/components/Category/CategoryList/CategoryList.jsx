@@ -4,6 +4,7 @@ import "./CategoryList.css";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Error404 from "../../Error404/Error404";
+import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner";
 
 function CategoryList() {
     const { categoryId } = useParams();
@@ -56,31 +57,16 @@ function CategoryList() {
     };
 
     // Función para obtener la URL de imagen más adecuada
-    const getImageUrl = (item) => {
-        // Si tiene imagen optimizada de Cloudinary
-        if (item.imagen_optimizada) {
-            // Prioridad: thumbnail > medium > original
-            return item.imagen_optimizada.thumbnail || 
-                   item.imagen_optimizada.medium || 
-                   item.imagen_optimizada.original;
+    const getImageUrl = (optimizada, ruta) => {
+        if (optimizada) {
+            return optimizada.original||
+                   optimizada.medium||
+                   null;
         }
-        // Si tiene ruta_imagen directa
-        if (item.ruta_imagen) {
-            return item.ruta_imagen;
+        if (ruta) {
+            return ruta;
         }
-        // Imagen por defecto si no hay
-        return "/default-category.png";
-    };
-
-    const getImage2Url = (item) => {
-        if (item.imagen2_optimizada) {
-            return item.imagen2_optimizada.thumbnail || 
-                   item.imagen2_optimizada.medium || 
-                   item.imagen2_optimizada.original;
-        }
-        if (item.ruta_imagen2) {
-            return item.ruta_imagen2;
-        }
+        
         return "/default-category.png";
     };
 
@@ -90,7 +76,7 @@ function CategoryList() {
             id: category.id,
             desc: category.desc,
             parent: category.parent,
-            imageUrl: getImageUrl(category),
+            imageUrl: getImageUrl(category.imagen_optimizada, category.ruta_imagen),
             hasImage: !!(category.ruta_imagen || category.imagen_public_id)
         };
     };
@@ -101,8 +87,8 @@ function CategoryList() {
             id: product.id,
             desc: product.desc,
             precio: product.precio,
-            imageUrl: getImageUrl(product),
-            imageUrl2: getImage2Url(product),
+            imageUrl: getImageUrl(product.imagen_optimizada, product.ruta_imagen),
+            imageUrl2: getImageUrl(product.imagen2_optimizada, product.ruta_imagen2),
             hasImage: !!(product.ruta_imagen || product.imagen_public_id || product.image_public_id2),
             variations: product.Variations || product.variations || [],
             stock_total: product.stock_total || 0,
@@ -162,9 +148,10 @@ function CategoryList() {
                         },
                         body: JSON.stringify({ parent_id: parentId })
                     });
-                    
-                    if (subRes.ok) {
-                        const subJson = await subRes.json();
+                    const subJson = await subRes.json();
+
+                    if(subJson.data.length > 0){
+                        console.log("Entro: ", subJson.data)
                         
                         // Manejar nuevo formato de respuesta
                         const subcategorias = subJson.success ? subJson.data : subJson;
@@ -213,7 +200,7 @@ function CategoryList() {
                     }
                     
                 } else {
-                    const res = await fetch("https://monkitec-api.vercel.app/categories/", {
+                    const res = await fetch("http://localhost:3030/categories/", {
                         method: "GET",
                         headers: { 
                             "Content-Type": "application/json",
@@ -274,10 +261,7 @@ function CategoryList() {
 
     if (loading) {
         return (
-            <div className="loading-container">
-                <div className="loading-spinner"></div>
-
-            </div>
+            <LoadingSpinner/>
         );
     }
 
