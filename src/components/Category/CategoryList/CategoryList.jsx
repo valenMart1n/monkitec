@@ -200,7 +200,7 @@ function CategoryList() {
                     }
                     
                 } else {
-                    const res = await fetch("http://localhost:3030/categories/", {
+                    const res = await fetch("https://monkitec-api.vercel.app/categories/", {
                         method: "GET",
                         headers: { 
                             "Content-Type": "application/json",
