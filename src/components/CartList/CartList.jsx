@@ -63,7 +63,7 @@ function CartList() {
         
         } else {
 
-          let url = "https://wa.me/" + 3434645961 + "?text=Hola soy " + nombre + 
+          let url = "https://wa.me/" + process.env.REACT_APP_CONTACT + "?text=Hola soy " + nombre + 
               ", quisiera hacer un pedido de:%0a" + 
               cart.map((item, index) => (
                 "- " + item.desc + hasVariant(item) + " " + item.cantidad + 
