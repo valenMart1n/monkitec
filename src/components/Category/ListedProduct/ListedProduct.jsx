@@ -48,7 +48,7 @@ function ListedProduct({ product, onClick }) {
                        product.variations.some(v => v !== null && v !== undefined);
         
         if (hasVariants) {
-            navigate(`/product/${product.id}`, {
+            navigate(`${process.env.REACT_APP_CLIENT_URL}/product/${product.id}`, {
                 state: { product }
             });
         } else {
@@ -84,7 +84,7 @@ function ListedProduct({ product, onClick }) {
             <div className={`listed-product-image-container ${showHoverEffect ? 'has-hover' : ''}`}>
                 {product.hasImage || product.ruta_imagen || product.imagen_optimizada ? (
                     <>
-                        {/* Imagen principal */}
+                 
                         <img 
                             src={image1} 
                             alt={product.desc}
@@ -94,7 +94,7 @@ function ListedProduct({ product, onClick }) {
                             }}
                         />
                         
-                        {/* Imagen secundaria (solo si hay hover effect) */}
+                     
                         {showHoverEffect && (
                             <img 
                                 src={image2} 

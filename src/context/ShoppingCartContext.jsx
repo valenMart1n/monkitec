@@ -28,22 +28,20 @@ export const ShoppingCartProvider = ({children}) => {
             console.log('💾 Guardado en localStorage:', cart.length, 'items');
         }
         
-        // Intentar guardar en backend (pero no es crítico si falla)
         saveToBackend(cart);
     }, [cart]);
 
-    // 3. Función para guardar en backend (con manejo de carrito vacío)
     const saveToBackend = useCallback(async (cartData) => {
         try {
-            // Si el carrito está vacío, también limpiamos el backend
+   
             if (cartData.length === 0) {
-                await fetch('https://monkitec-api.vercel.app/cart/clear', {
+                await fetch(`${process.env.REACT_APP_API_URL}/cart/clear`, {
                     method: 'POST',
                     credentials: 'include',
                 });
                 console.log('✅ Backend limpiado (carrito vacío)');
             } else {
-                await fetch('https://monkitec-api.vercel.app/cart/save', {
+                await fetch(`${process.env.REACT_APP_API_URL}/cart/save`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -58,11 +56,11 @@ export const ShoppingCartProvider = ({children}) => {
         }
     }, []);
 
-    // 4. Cargar desde backend al inicio (opcional, en segundo plano)
+    
     useEffect(() => {
         const loadFromBackend = async () => {
             try {
-                const response = await fetch('https://monkitec-api.vercel.app/cart', {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/cart`, {
                     credentials: 'include'
                 });
                 const data = await response.json();
@@ -172,7 +170,7 @@ export const ShoppingCartProvider = ({children}) => {
 
     const refreshCart = useCallback(async () => {
         try {
-            const response = await fetch('https://monkitec-api.vercel.app/cart', {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/cart`, {
                 credentials: 'include'
             });
             const data = await response.json();

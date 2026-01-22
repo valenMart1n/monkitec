@@ -1,8 +1,8 @@
 .error-background{
-    margin-top: 15px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    padding-top: 4em;
 }
 .error-image{
     margin-top: 10px;

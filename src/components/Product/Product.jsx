@@ -208,7 +208,7 @@ function Product() {
                     return;
                 }
                 
-                const response = await fetch("https://monkitec-api.vercel.app/products/byId", {
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/products/byId`, {
                     method: "POST",
                     headers: { 
                         "Content-Type": "application/json",
@@ -318,7 +318,7 @@ function Product() {
                         <img 
                             src={image1} 
                             alt={product.desc}
-                            className={`prod-image primary`}
+                            className={`prod-image primary ${!primary? 'hidden':''}`}
                             onError={(e) => {
                                 e.target.src = ignite;
                             }}

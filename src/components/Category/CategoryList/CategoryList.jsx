@@ -18,7 +18,7 @@ function CategoryList() {
 
 
     const getProductDetail = (product) => {
-        navigate(`/product/${product.id}`, {
+        navigate(`${process.env.REACT_APP_CLIENT_URL}/product/${product.id}`, {
             state: {  product: {
                 id: product.id,
                 desc: product.desc,
@@ -35,28 +35,12 @@ function CategoryList() {
             } }
         });
     };
-    /*const addProducts = (product) => {
-    
-    setCart((currItems) => {
-      
-      const isItemFound = currItems.find((item) => item.codigo === product.codigo);
-      if(isItemFound){
-        return currItems.map((item) => 
-        item.codigo === product.codigo 
-            ? {...item, cantidad: item.cantidad +quantity}
-            : item
-        );
-      }else{
-        return [...currItems, {...product, cantidad: quantity}];
-      }
-    });     
-    }
-    */
+  
     const handleCategoryClick = (id) => {
-        navigate(`/categories/${id}`);
+        navigate(`${process.env.REACT_APP_CLIENT_URL}/categories/${id}`);
     };
 
-    // Función para obtener la URL de imagen más adecuada
+   
     const getImageUrl = (optimizada, ruta) => {
         if (optimizada) {
             return optimizada.original||
@@ -70,7 +54,7 @@ function CategoryList() {
         return "/default-category.png";
     };
 
-    // Función para extraer solo datos necesarios de categoría
+    
     const extractCategoryData = (category) => {
         return {
             id: category.id,
@@ -115,8 +99,7 @@ function CategoryList() {
                 if (categoryId) {
                     const parentId = parseInt(categoryId);
                     
-                    // 1. Obtener información de la categoría actual
-                    const categoryRes = await fetch("https://monkitec-api.vercel.app/categories/byId", {
+                    const categoryRes = await fetch(`${process.env.REACT_APP_API_URL}/categories/byId`, {
                         method: "POST",
                         headers: { 
                             "Content-Type": "application/json",
@@ -135,12 +118,12 @@ function CategoryList() {
                     
                     const categoryJson = await categoryRes.json();
                     
-                    // Manejar nuevo formato de respuesta
+                    
                     const categoryData = categoryJson.success ? categoryJson.data : categoryJson;
                     setCurrentCategory(categoryData.desc);
                     
-                    // 2. Obtener subcategorías
-                    const subRes = await fetch("https://monkitec-api.vercel.app/categories/subcategories", {
+                  
+                    const subRes = await fetch(`${process.env.REACT_APP_API_URL}/categories/subcategories`, {
                         method: "POST",
                         headers: { 
                             "Content-Type": "application/json",
@@ -153,11 +136,11 @@ function CategoryList() {
                     if(subJson.data.length > 0){
                         console.log("Entro: ", subJson.data)
                         
-                        // Manejar nuevo formato de respuesta
+                     
                         const subcategorias = subJson.success ? subJson.data : subJson;
                         
                         if (subcategorias && subcategorias.length > 0) {
-                            // Extraer solo los datos necesarios con imágenes
+                          
                             const categoriesWithImages = subcategorias.map(extractCategoryData);
                             setCategoriesArray(categoriesWithImages);
                             setProductsArray([]);
@@ -166,8 +149,8 @@ function CategoryList() {
                         }
                     }
                     
-                    // 3. Si no hay subcategorías, obtener productos
-                    const productsRes = await fetch("https://monkitec-api.vercel.app/products/byCategory", {
+                   
+                    const productsRes = await fetch(`${process.env.REACT_APP_API_URL}/products/byCategory`, {
                         method: "POST",
                         headers: { 
                             "Content-Type": "application/json",
@@ -179,7 +162,7 @@ function CategoryList() {
                     if (productsRes.ok) {
                         const productsJson = await productsRes.json();
                         
-                        // Manejar nuevo formato de respuesta
+                      
                         let productos;
                         if (productsJson.success) {
                             productos = productsJson.data.products || productsJson.data;
@@ -187,7 +170,7 @@ function CategoryList() {
                             productos = productsJson;
                         }
                         
-                        // Extraer solo los datos necesarios con imágenes
+                       
                         const productsWithImages = Array.isArray(productos) 
                             ? productos.map(extractProductData)
                             : [];
@@ -200,7 +183,7 @@ function CategoryList() {
                     }
                     
                 } else {
-                    const res = await fetch("https://monkitec-api.vercel.app/categories/", {
+                    const res = await fetch(`${process.env.REACT_APP_API_URL}/categories/`, {
                         method: "GET",
                         headers: { 
                             "Content-Type": "application/json",
@@ -211,17 +194,17 @@ function CategoryList() {
                     if (res.ok) {
                         const dataJson = await res.json();
                         
-                        // Manejar nuevo formato de respuesta
+          
                         const data = dataJson.success ? dataJson.data : dataJson;
                         
-                        // Extraer solo los datos necesarios con imágenes
+               
                         const categoriesWithImages = Array.isArray(data) 
                             ? data.map(extractCategoryData)
                             : [];
                         
                         setCategoriesArray(categoriesWithImages);
                         setProductsArray([]);
-                        const res2 = await fetch("https://monkitec-api.vercel.app/products/featured?limit=4", {
+                        const res2 = await fetch(`${process.env.REACT_APP_API_URL}/products/featured?limit=4`, {
                             method: "GET",
                             headers: {
                                 "Content-Type": "application/json",

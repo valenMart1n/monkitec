@@ -2,6 +2,8 @@
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
+    position: fixed;
+    z-index: 3;
     background-color: rgb(20, 43, 68);
     height: 55px;
     width: 100%;
@@ -15,26 +17,35 @@
     margin-left: 5px;
     height: 47px;
     width: 49px;
-     cursor: pointer;
+    cursor: pointer;
 }
 .title-background{
-    width: 100%;
+    width: 85%;
     display: flex;
-    justify-content: center;
     align-items: center;
-   
+    justify-content: center;
+    margin-left: 15%;
 }
 .title{
     font-family: 'Rubik Dirt', Courier, monospace;
     color: white;
     font-size: 20px;
-     cursor: pointer;
+    cursor: pointer;
 }
 .shopping-cart-container{
-color: white;
-    margin-right: 1.5em;
+    min-width: 45px;
+    width:15%;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    color: white;
     font-size: 20px;
     cursor: pointer;
+    justify-content: right;
+    margin-right: 20px;
+}
+.shopping-cart-logo{
+    
 }
 @media (min-width: 640px) {
     .title{
