@@ -8,8 +8,13 @@ import CategoryList from './components/Category/CategoryList/CategoryList';
 import Product from "./components/Product/Product";
 import { ShoppingCartProvider } from './context/ShoppingCartContext';
 import CartList from "./components/CartList/CartList";
+import { useEffect } from "react";
+import facebookService from "./services/facebookService";
 
 function App() {
+  useEffect(() => {
+    facebookService.init();
+  },[]);
   return (<div>
 
     <BrowserRouter>

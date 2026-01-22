@@ -5,6 +5,7 @@ import { Icon } from "../Icon";
 import { faCircleExclamation, faXmark, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../context/AlertContext";
+import facebookService from "../../services/facebookService";
 
 function CartList() {
   const navigate = useNavigate();
@@ -18,6 +19,15 @@ function CartList() {
   const [verifyDelivery, setVerifyDelivery] = useState(false);
   const [address, setAddress] = useState("");
   
+  /*useEffect(() => {
+    facebookService.trackStartCheckout(
+      cart.reduce((sum, item) => {
+      return sum + (item.precio * item.cantidad);
+      }, 0),
+      cart.length
+    )
+  })
+*/
   useEffect(() => {
         if (lastRemovedItem) {
             createToast({
@@ -52,6 +62,7 @@ function CartList() {
           setVerifyDelivery(true);
         
         } else {
+
           let url = "https://wa.me/" + 3434645961 + "?text=Hola soy " + nombre + 
               ", quisiera hacer un pedido de:%0a" + 
               cart.map((item, index) => (

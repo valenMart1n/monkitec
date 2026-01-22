@@ -7,6 +7,7 @@ import ignite from "../../img/ignite.jpg"
 import { Icon } from "../Icon";
 import { useAlert } from "../../context/AlertContext";
 import { faAngleLeft, faAngleRight, faArrowLeft, faArrowRight, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import facebookService from "../../services/facebookService";
 
 function Product() {
     const { createToast } = useAlert();
@@ -61,6 +62,12 @@ function Product() {
             return;
         }
         
+      /*  facebookService.trackAddToCart(
+            "",
+            product.id,
+            product.precio
+        )
+*/
         const hasVariants = variations.length > 0;
         
         if (hasVariants && !selectedVariant) {
@@ -196,6 +203,14 @@ function Product() {
         };
     };
 
+    /*useEffect(() => {
+        facebookService.trackViewProduct(
+            product.desc,
+            product.id,
+            product.precio
+        );
+    }, []);
+    */
     useEffect(() => {
         const fetchProduct = async () => {
             try {
