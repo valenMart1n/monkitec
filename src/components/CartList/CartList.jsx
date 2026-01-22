@@ -29,7 +29,6 @@ function CartList() {
     }, [lastRemovedItem, createToast]); 
   const handleChangeCheck = (e) => {  
     setDelivery(!delivery);
-    console.log("El delivery esta: ", delivery);
   }
    const handleInputChange = (event) => {
         setNombre(event.target.value);

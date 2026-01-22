@@ -17,15 +17,12 @@ export const ShoppingCartProvider = ({children}) => {
         }
     });
     
-    // 2. Guardar automáticamente en localStorage cuando cambia el carrito
     useEffect(() => {
         if (cart.length === 0) {
-            // Si el carrito está vacío, REMOVER el item de localStorage
             localStorage.removeItem('carrito_local');
-            console.log('🗑️ Carrito vacío - eliminado de localStorage');
+          
         } else {
             localStorage.setItem('carrito_local', JSON.stringify(cart));
-            console.log('💾 Guardado en localStorage:', cart.length, 'items');
         }
         
         saveToBackend(cart);
@@ -39,7 +36,6 @@ export const ShoppingCartProvider = ({children}) => {
                     method: 'POST',
                     credentials: 'include',
                 });
-                console.log('✅ Backend limpiado (carrito vacío)');
             } else {
                 await fetch(`${process.env.REACT_APP_API_URL}/cart/save`, {
                     method: 'POST',
@@ -49,10 +45,8 @@ export const ShoppingCartProvider = ({children}) => {
                     credentials: 'include',
                     body: JSON.stringify({ cart: cartData }),
                 });
-                console.log('✅ Carrito sincronizado con backend');
             }
         } catch (error) {
-            console.log('⚠️ Backend no disponible');
         }
     }, []);
 
@@ -66,26 +60,21 @@ export const ShoppingCartProvider = ({children}) => {
                 const data = await response.json();
                 
                 if (data.success && data.carrito && Array.isArray(data.carrito)) {
-                    // Solo actualizar si el backend tiene datos
                     if (data.carrito.length > 0) {
                         setCartState(data.carrito);
-                        console.log('📥 Carrito cargado desde backend:', data.carrito.length, 'items');
                     } else {
-                        // Si el backend tiene array vacío, limpiamos local también
                         setCartState([]);
                         localStorage.removeItem('carrito_local');
-                        console.log('📥 Backend tiene carrito vacío');
+               
                     }
                 }
             } catch (error) {
-                console.log('📦 Usando carrito de localStorage');
             }
         };
         
         loadFromBackend();
     }, []);
 
-    // 5. Funciones del carrito (corregidas para limpiar cuando queda vacío)
     const addToCart = useCallback((item) => {
         setCartState((prevCart) => {
             const existingItemIndex = prevCart.findIndex(cartItem => {
@@ -178,7 +167,6 @@ export const ShoppingCartProvider = ({children}) => {
                 setCartState(data.carrito || []);
             }
         } catch (error) {
-            console.log('No se pudo actualizar del backend');
         }
     }, []);
 

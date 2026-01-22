@@ -134,9 +134,6 @@ function CategoryList() {
                     const subJson = await subRes.json();
 
                     if(subJson.data.length > 0){
-                        console.log("Entro: ", subJson.data)
-                        
-                     
                         const subcategorias = subJson.success ? subJson.data : subJson;
                         
                         if (subcategorias && subcategorias.length > 0) {
@@ -225,7 +222,6 @@ function CategoryList() {
                     }
                 }
             } catch (error) {
-                console.error("Error en fetchData:", error);
                 if (error.message === "CATEGORY_NOT_FOUND") {
                     setError("CATEGORY_NOT_FOUND");
                 } else {
