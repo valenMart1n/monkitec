@@ -62,12 +62,12 @@ function Product() {
             return;
         }
         
-      /*  facebookService.trackAddToCart(
-            "",
+        facebookService.trackAddToCart(
+            product.desc,
             product.id,
             product.precio
         )
-*/
+
         const hasVariants = variations.length > 0;
         
         if (hasVariants && !selectedVariant) {

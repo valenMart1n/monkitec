@@ -15,6 +15,7 @@
     "facebook-pixel": "^0.0.1",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
+    "react-facebook-pixel": "^1.0.4",
     "react-router-dom": "^7.10.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"

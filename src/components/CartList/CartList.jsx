@@ -19,7 +19,7 @@ function CartList() {
   const [verifyDelivery, setVerifyDelivery] = useState(false);
   const [address, setAddress] = useState("");
   
-  /*useEffect(() => {
+  useEffect(() => {
     facebookService.trackStartCheckout(
       cart.reduce((sum, item) => {
       return sum + (item.precio * item.cantidad);
@@ -27,7 +27,7 @@ function CartList() {
       cart.length
     )
   })
-*/
+
   useEffect(() => {
         if (lastRemovedItem) {
             createToast({
