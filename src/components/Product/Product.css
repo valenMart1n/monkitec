@@ -68,7 +68,7 @@
 }
 
 .product-detail-price{
-    width: 30%;
+    width: 35%;
     padding-top: 10px;
     color: rgb(0, 197, 0);
     font-size: 20px;
@@ -136,7 +136,7 @@
 
 .variations{
     cursor: pointer;
-    width: 75%;
+    width: 90%;
     height: 2.5em;
     font-size: 15px;
     border: solid;
@@ -144,6 +144,7 @@
     border-width: 3px;
     border-color: rgb(32, 68, 105);
     font-family: 'Roboto', Courier, monospace;
+    margin-left: 5px;
 }
 
 .variation-option{

@@ -71,7 +71,10 @@ function Product() {
         const hasVariants = variations.length > 0;
         
         if (hasVariants && !selectedVariant) {
-            alert("Seleccione una variante de este producto");
+            createToast({
+            text: "Seleccinpm startoná una de las opciones del producto",
+            tipo: "warning"
+            }); 
             return;
         }
         
@@ -373,7 +376,6 @@ function Product() {
             <div className="detail-container">
                 <h1 className="product-detail-title">{product.desc}</h1>
                 <p className="product-detail-price">${product.precio.toLocaleString('es-AR')}</p>
-                
                 {variations.length > 0 && (
                     <section className="options-section">
                         <select className="variations" onChange={(e) => {
@@ -384,12 +386,8 @@ function Product() {
                                 setSelectedVariant(variations[selectedIndex]);
                             }
                         }}>
-                            {categoryName.includes("Vapes") ? (
-                                <option value="">Selecciona un gusto</option>
-                            ) : (
-                                <option value="">Selecciona un color</option>
-                            )}
                             
+                            <option value="">Selecciona una de las opciones</option>
                             {variations.map((variation, index) => {
                                 const stock = variation.stock_info?.stock || variation.Product_Variation?.stock || 0;
                                 const isOutOfStock = stock === 0;

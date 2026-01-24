@@ -17,7 +17,7 @@ function SearchSuggestion({products}){
                 imagen_public_id: product.imagen_public_id,
                 imagen_optimizada: product.imagen_optimizada,
                 imagen2_optimizada: product.imagen2_optimizada,
-                Variations: product.variations, 
+                Variations: product.Variations, 
                 Category: product.category,
                 stock_total: product.stock_total,
                 disponible: product.disponible

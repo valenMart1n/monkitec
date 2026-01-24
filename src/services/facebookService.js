@@ -25,7 +25,7 @@ class FacebookServiceSimple {
         
         this.initialized = true;
         this.pixelLoaded = true;
-        console.log('✅ Facebook Pixel inicializado');
+       // console.log('✅ Facebook Pixel inicializado');
         
       } catch (error) {
         console.warn('⚠️ Facebook Pixel bloqueado por navegador/extensión');
@@ -40,13 +40,13 @@ class FacebookServiceSimple {
     if (this.initialized && this.pixelLoaded) {
       try {
         ReactPixel.track(eventName, datos);
-        console.log(`📊 Evento Facebook: ${eventName}`, datos);
+       // console.log(`📊 Evento Facebook: ${eventName}`, datos);
       } catch (error) {
-        console.warn(`⚠️ No se pudo enviar evento ${eventName}:`, error.message);
+       // console.warn(`⚠️ No se pudo enviar evento ${eventName}:`, error.message);
       }
     } else if (this.initialized && !this.pixelLoaded) {
       // Simular envío para desarrollo (sin error)
-      console.log(`[SIMULADO] Evento Facebook: ${eventName}`, datos);
+     // console.log(`[SIMULADO] Evento Facebook: ${eventName}`, datos);
     }
   }
 
@@ -63,7 +63,7 @@ class FacebookServiceSimple {
     if (this.pixelLoaded) {
       ReactPixel.track('ViewContent', datos);
     }
-    console.log(`📊 ${this.pixelLoaded ? 'Enviado' : '[Simulado]'} ViewContent:`, datos);
+    //console.log(`📊 ${this.pixelLoaded ? 'Enviado' : '[Simulado]'} ViewContent:`, datos);
   }
 
 

@@ -6,7 +6,7 @@
     background-color: rgb(253, 255, 255);
     margin: 5px;
     border-radius: 10px;
-    animation: fadeIn 1.6s ease-in-out;
+    animation: fadeIn 2.5s ease-in-out;
 }
 .text-background{
     display: flex;

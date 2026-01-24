@@ -71,7 +71,7 @@ function Header(){
                     </div>
                     
                     <Icon icon={faSearch} css="search-button" onClick={() => {setSearchActive(!searchActive)
-                        console.log("Valor search: ", searchActive)
+                       
                     }}/>
                     <Icon icon={faShoppingCart} css="shopping-cart-logo" onClick={() => navigate(`${process.env.REACT_APP_CLIENT_URL}/shopping-cart`)}/>
                     <p style={{fontSize: "16px"}}>({cart.length})</p>
