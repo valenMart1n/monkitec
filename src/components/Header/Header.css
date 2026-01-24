@@ -2,11 +2,13 @@
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
+    justify-content: right;
     position: fixed;
     z-index: 3;
     background-color: rgb(20, 43, 68);
-    height: 55px;
+    height: 8%;
     width: 100%;
+    transition: all ease-in-out 150ms;
 }
 
 .fa-bars{
@@ -14,27 +16,28 @@
     color: white;
 }
 .image-logo{
-    margin-left: 5px;
     height: 47px;
     width: 49px;
     cursor: pointer;
 }
 .title-background{
-    width: 85%;
+    width: 90%;
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-left: 15%;
+   justify-content: center;
+   padding-left: 6em;
+   
 }
-.title{
+.header-title{
+    display: none;
     font-family: 'Rubik Dirt', Courier, monospace;
     color: white;
     font-size: 20px;
     cursor: pointer;
 }
 .shopping-cart-container{
-    min-width: 45px;
-    width:15%;
+    min-width: 88px;
+    width:10%;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -44,11 +47,74 @@
     justify-content: right;
     margin-right: 20px;
 }
-.shopping-cart-logo{
-    
+
+.search-bar-header{
+    display: none;
+}
+
+.search-bar-header-container{
+    display: none;
+    margin-right: 15px;
+    border: solid;
+    border-radius: 5px;
+    border-width: 2px;
+    background-color: white;
+    width: 70%;
+    height: 100%;
+    font-size: 16px;
+    padding: 5px;
+}
+
+.search-bar-icon{
+    cursor: auto;
+    color: rgb(124, 124, 124);
 }
 @media (min-width: 640px) {
-    .title{
+    .search-bar-header-container{
+        display: flex;
+    }
+    .search-button{
+        display: none;
+    }
+    .search-bar-header{
+        display: block;
+    }
+    .search-bar-header{
+        width: 90%;
+        background-color: white;
+        border: none;
+        height: 100%;
+    }
+
+    .search-bar-header:focus {
+        outline: none;
+    }
+
+    .shopping-cart-container{
+        min-width: 250px;
+    }
+    .image-logo{
+        margin-left: 16em;
+    }
+    .title-background{
+        padding-left: 0;
+    }
+    .header-title{
+        display: block;
         font-size: 25px;
+    }
+}
+@media (min-width: 1024px){
+
+    .search-bar-header-container{
+        width: 280px;
+    }
+    
+    .shopping-cart-container{
+        min-width: 350px;
+        width: 30%;
+    }
+    .title-background{
+        padding-left: 7.5em;
     }
 }

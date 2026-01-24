@@ -1,11 +1,12 @@
 .listed-product-background{
-    min-width: 186px;
-    min-height: 440px;
+    min-width: 210px;
+    max-width: 275px;
     cursor: pointer;
     display: flex;
     flex-wrap: wrap;
     margin-top: 15px;
-    width: 70%;
+    width: 65%;
+    height: 24em;
     background-color: white;
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.699);
     transition: all ease-in-out 200ms;
@@ -70,7 +71,7 @@
 .label-price{
     font-size: 20px;
     width: 100%;
-    padding-top: 25px;
+    padding-top: 5px;
     font-weight: bolder;
     color: rgb(26, 26, 26);
 }
@@ -121,20 +122,16 @@
 }
 
 @media (min-width: 640px) {
-  
-  .button-container{
-   
-  }
  
   .listed-product-background{
         max-width: 276px;
-        max-height: 417px;
+        max-height: 400px;
          
     }
 }
 @media (min-width: 1024px) {
     .listed-product-background{
         width: 18%;
-         
+        
     }
 }

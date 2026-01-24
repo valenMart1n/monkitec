@@ -10,6 +10,7 @@ import { ShoppingCartProvider } from './context/ShoppingCartContext';
 import CartList from "./components/CartList/CartList";
 import { useEffect } from "react";
 import facebookService from "./services/facebookService";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   useEffect(() => {
@@ -27,6 +28,7 @@ function App() {
         <Route path="/shopping-cart" element={<CartList/>}/>
         <Route path="*" element={<Error404/>}/>
       </Routes>
+      <Footer/>
       </ShoppingCartProvider>
     </BrowserRouter>
     </div>

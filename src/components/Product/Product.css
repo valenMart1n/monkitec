@@ -3,6 +3,7 @@
     display: flex;
     flex-wrap: wrap;
     width: 100%;
+    padding-bottom: 6em;
 }
 .previus-image{
     position: absolute;
@@ -27,11 +28,11 @@
 .product-image-container {
   position: relative;
   touch-action: 'pan-x pinch-zoom';
-  width: 90%;
-  max-width: 500px;
-  height: 400px;
+  width: 85%;
+  height: 300px;
   margin-bottom: 15px;
   border-radius: 8px;
+  
 }
 
 .prod-image.primary{
@@ -39,9 +40,7 @@
 }
 
 .product-image-container .prod-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+    object-fit: contain;
 }
 
  .image-section{
@@ -177,7 +176,7 @@ display: block;
        
     }
     .product-image-container{
-        margin-top: 20px;
+        margin-top: 3em;
     }
     .image-section{
         width: 50%;
@@ -187,9 +186,7 @@ display: block;
         width: 100%;
     }
     
-    .product-image-container{
-        width: 100%;
-    }
+   
     .previus-image{
         left: 5%;
     }
@@ -232,8 +229,9 @@ display: block;
     }
     
     .product-image-container{
-        max-width: 414px;
-        max-height: 420px;
+        height: 70%;
+        max-width: none;
+        max-height: none;
     }
     
     .variation-option{

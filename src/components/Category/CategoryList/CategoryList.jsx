@@ -201,6 +201,7 @@ function CategoryList() {
                         
                         setCategoriesArray(categoriesWithImages);
                         setProductsArray([]);
+                        setCurrentCategory("Categorías");
                         const res2 = await fetch(`${process.env.REACT_APP_API_URL}/products/featured?limit=4`, {
                             method: "GET",
                             headers: {
@@ -252,7 +253,7 @@ function CategoryList() {
         <div className="list-background">
             {productsArray.length > 0 ? (
                 <div className="products-list-background">
-                    <h1 className="products-list-title">{currentCategory}</h1>
+                    <h1 className="products-list-title">{currentCategory||"Categorías"}</h1>
                     {productsArray.map((product, index) => (
                        <ListedProduct 
                             key={product.id || index}
@@ -263,7 +264,7 @@ function CategoryList() {
                 </div>
             ) : (
                 <div className="categories-list-background">
-                    <h1 className="categories-list-title">Categorías</h1>
+                    <h1 className="categories-list-title">{currentCategory||"Categorías"}</h1>
                     {categoriesArray.map((category) => (
                         <div key={category.id} className="category-background">
                             <CategoryItem 

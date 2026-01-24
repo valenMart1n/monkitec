@@ -1,0 +1,23 @@
+.footer-background{
+    font-family: 'Roboto', Times, serif;
+    position: fixed;
+    font-weight: bolder;
+    height: 3em;
+    width: 100%;
+    background-color: rgb(20, 43, 68);
+    z-index: 2;
+    bottom: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: white;
+}
+.footer-title{
+    width: 80%;
+    text-align: center;
+    padding-left: 13%;
+}
+.footer-media-icons{
+    cursor: pointer;
+    font-size: 22px;
+}

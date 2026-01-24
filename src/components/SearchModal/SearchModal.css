@@ -1,0 +1,84 @@
+.search-modal-background{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    background-color: white;
+    z-index: 3;
+    transition: all ease-in-out 150ms;
+   
+}
+.search-modal-background.active{
+    display: block;
+}
+.search-button{
+    margin-right: 10px
+}
+
+.header-background.active{
+    background-color: white;
+    border-bottom: solid;
+
+}
+.close-search-bar{
+    margin-left: 5px;
+    padding: 5px;
+    font-size: 18px;
+}
+.search-bar{
+    border: none;
+    padding-left: 5px;
+    width: 80%;
+    height: 50%;
+    color: #34495e;
+    font-size: 16px;
+}
+
+.search-bar-container{
+    display: flex;
+    width: 100%;
+    color: #34495e;
+    align-items: center;
+    height: 60px;
+    border-bottom: solid;
+    border-bottom-width: 1px;
+}
+
+.search-button{
+    padding-left: 10px;
+    font-size: 18px;
+}
+.search-results{
+   
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+}
+.product-result{
+    border: none;
+    height: 80px;
+    display: flex;
+    width: 100%;
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #ebebee;
+}
+.product-result-image{
+    width: 30%;
+    object-fit: contain;
+    max-height: 101px;
+}
+
+.product-result-data{
+    font-size: 15px;
+    padding-top: 5px;
+    padding-left: 10px;
+    width: 70%;
+}
+
+.product-result-desc{
+    font-family: 'Roboto', Courier, monospace;
+    width: 100%;
+    font-weight: 300;
+}
